@@ -17,12 +17,17 @@ TEST(RDD, OpenAndReadFile) {
 }
 
 TEST(RDD, WriteAndReadBulkOfData) {
-    uint8_t* bulkOfData = new uint8_t[BUFSIZ];
+    // Open test.txt file using fyramid
 
-    if (bulkOfData != nullptr) {
-        fy::writeBulk(bulkOfData, BUFSIZ, 0);
+    // Write bulk of data
 
-        delete[] bulkOfData;
-        bulkOfData = nullptr;
-    }
+    // Close fyramid handle
+
+    // Open test.txt file using fyramid
+
+    // Read bulk of data
+
+    // Read from selected offset
+
+    // Close fyramid handle
 }

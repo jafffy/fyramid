@@ -8,10 +8,12 @@ include_directories(include src)
 
 add_subdirectory(src)
 
+# Examples
+add_subdirectory(examples/writeExample)
+
 # For testing
 set(gtest_SOURCE_DIR deps/googletest/googletest)
 add_subdirectory(${gtest_SOURCE_DIR})
 
 add_subdirectory(tests)
-
 
