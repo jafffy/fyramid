@@ -104,4 +104,24 @@ namespace fy {
 
         ::close(fd);
     }
+
+    void readBulk(const char* path, void* data, size_t size, off_t offset) {
+        assert(size != 0);
+
+        int fd = ::open(path, O_RDONLY);
+        if (fd == -1) {
+            fprintf(stderr, "open: %s\n", strerror(errno));
+            _exit(-1);
+        }
+
+        assert(fd != -1);
+
+        ssize_t res = pread(fd, data, size, offset);
+        if (res == -1) {
+            fprintf(stderr, "pread: %s\n", strerror(errno));
+            _exit(-1);
+        }
+
+        ::close(fd);
+    }
 }
