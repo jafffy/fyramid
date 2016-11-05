@@ -83,4 +83,25 @@ namespace fy {
 
         gFileMap.clear();
     }
+
+    void writeBulk(const char* path, const void* data, size_t size, off_t offset) {
+        assert(size != 0);
+
+        int fd = ::open(path, O_WRONLY | O_CREAT | O_TRUNC,
+                        S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);
+        if (fd == -1) {
+            fprintf(stderr, "open: %s\n", strerror(errno));
+            _exit(-1);
+        }
+
+        assert(fd != -1);
+
+        ssize_t res = pwrite(fd, data, size, offset);
+        if (res == -1) {
+            fprintf(stderr, "pwrite: %s\n", strerror(errno));
+            _exit(-1);
+        }
+
+        ::close(fd);
+    }
 }

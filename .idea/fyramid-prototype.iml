@@ -12,6 +12,8 @@
       <sourceFolder url="file://$MODULE_DIR$/tests/unittest.cc" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/tests/bdd.cc" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/examples/bulkyIO/CMakeLists.txt" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/examples/bulkyIO/bulkyIO.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/examples/writeExample/writeExample.cc" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/examples/writeExample/CMakeLists.txt" isTestSource="false" />
     </content>

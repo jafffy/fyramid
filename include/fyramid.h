@@ -32,6 +32,8 @@ namespace fy {
 
     void init();
     void release();
+
+    void writeBulk(const char* path, const void* data, size_t size, off_t offset);
 }
 
 #endif // FYRAMID_FYRAMID_H_

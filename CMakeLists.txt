@@ -10,6 +10,7 @@ add_subdirectory(src)
 
 # Examples
 add_subdirectory(examples/writeExample)
+add_subdirectory(examples/bulkyIO)
 
 # For testing
 set(gtest_SOURCE_DIR deps/googletest/googletest)
