@@ -3,12 +3,10 @@
 
 #include <cstdio>
 #include <cstddef>
+#include <cassert>
 
 #include <string>
 #include <unordered_map>
-
-#define BEGIN_NAMESPACE_FY namespace fy {
-#define END_NAMESPACE_FY }
 
 namespace fy {
     enum class OpenMode {
@@ -17,16 +15,22 @@ namespace fy {
 
     class File {
     public:
+        File(const char* path, OpenMode openMode);
+        ~File();
+
+        void write(const std::string& data, size_t size, off_t offset);
+
+        static File* open(const char* path, OpenMode openMode);
+        static void close(File* fp);
+
+        std::string _path;
+        OpenMode _openMode;
+
+        int _fileDescriptor;
     };
-
-    File* open(const char* path, OpenMode openMode);
-
-    void close(File* fp);
 
     void init();
     void release();
-
-    void write(File* fp, const std::string& data, size_t size, off_t offset);
 }
 
 #endif // FYRAMID_FYRAMID_H_

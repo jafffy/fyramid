@@ -12,11 +12,10 @@ int main()
 
     fy::init();
 
-    fy::File* fp = fy::open("hello.txt", fy::OpenMode::write);
+    fy::File* fp = fy::File::open("./hello.txt", fy::OpenMode::write);
+    fp->write(data, data.size(), 0);
 
-    fy::write(fp, data, data.size(), 0);
-
-    fy::close(fp);
+    fy::File::close(fp);
 
     fy::release();
 

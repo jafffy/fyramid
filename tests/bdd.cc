@@ -5,9 +5,6 @@
 #include <cstdint>
 
 TEST(BDD, OpenAndCloseFileInWriteMode) {
-    fy::File* fp = fy::open("test.txt", fy::OpenMode::write);
-
-    fy::close(fp);
 }
 
 TEST(RDD, OpenAndWriteFile) {

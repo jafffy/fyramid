@@ -1,18 +1,57 @@
-#include <fyramid.h>
-
 #include "fyramid.h"
+
+#include <fcntl.h>
+#include <unistd.h>
+#include <cstring>
 
 using namespace std;
 
 static std::unordered_map<std::string, fy::File*> gFileMap;
 
 namespace fy {
-
-    File* open(const char* path, OpenMode openMode) {
-        return nullptr;
+    File::File(const char *path, OpenMode openMode)
+    : _path(path), _openMode(openMode), _fileDescriptor(-1)
+    {
+        if (openMode == OpenMode::write) {
+            _fileDescriptor = ::open(path,
+                                     O_WRONLY | O_CREAT | O_TRUNC,
+                                     S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);
+            if (_fileDescriptor == -1) {
+                fprintf(stderr, "%s\n", strerror(errno));
+                _exit(-1);
+            }
+        }
     }
 
-    void close(File* fp) {
+    File::~File() {
+        if (_fileDescriptor != -1) {
+            ::close(_fileDescriptor);
+        }
+    }
+
+    void File::write(const std::string &data, size_t size, off_t offset) {
+        assert(_fileDescriptor != -1);
+
+        ssize_t res = pwrite(_fileDescriptor, &data.front(), size, offset);
+        if (res == -1) {
+            fprintf(stderr, "%s\n", strerror(errno));
+            _exit(-1);
+        }
+    }
+
+    File* File::open(const char* path, OpenMode openMode) {
+        return gFileMap[path] = new File(path, openMode);
+    }
+
+    void File::close(File* fp) {
+        ::close(fp->_fileDescriptor);
+
+        gFileMap.erase(fp->_path);
+
+        if (fp != nullptr) {
+            delete fp;
+            fp = nullptr;
+        }
     }
 
     void init() {
@@ -20,9 +59,12 @@ namespace fy {
     }
 
     void release() {
-    }
+        for (auto& it : gFileMap) {
+            if (it.second != nullptr) {
+                delete it.second;
+            }
+        }
 
-    void write(File* fp, const std::string& data, size_t size, off_t offset) {
-
+        gFileMap.clear();
     }
 }
