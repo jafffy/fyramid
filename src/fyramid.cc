@@ -20,12 +20,28 @@ namespace fy {
                 fprintf(stderr, "%s\n", strerror(errno));
                 _exit(-1);
             }
+        } else if (openMode == OpenMode::read) {
+            _fileDescriptor = ::open(path, O_RDONLY);
+            if (_fileDescriptor == -1) {
+                fprintf(stderr, "%s\n", strerror(errno));
+                _exit(-1);
+            }
         }
     }
 
     File::~File() {
         if (_fileDescriptor != -1) {
             ::close(_fileDescriptor);
+        }
+    }
+
+    void File::read(std::string& data, size_t size, off_t offset) {
+        assert(_fileDescriptor != -1);
+
+        ssize_t res = pread(_fileDescriptor, &data.front(), size, offset);
+        if (res == -1) {
+            fprintf(stderr, "%s\n", strerror(errno));
+            _exit(-1);
         }
     }
 

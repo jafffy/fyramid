@@ -4,18 +4,30 @@
 
 #include <fyramid.h>
 
-#include <string>
-
 int main()
 {
-    std::string data = "Hello, World!";
-
     fy::init();
 
-    fy::File* fp = fy::File::open("./hello.txt", fy::OpenMode::write);
-    fp->write(data, data.size(), 0);
+    {
+        std::string data = "Hello, World!";
 
-    fy::File::close(fp);
+        fy::File* fp = fy::File::open("./hello.txt", fy::OpenMode::write);
+        fp->write(data, data.size(), 0);
+
+        fy::File::close(fp);
+    }
+
+    {
+        std::string data;
+        data.resize(5);
+
+        fy::File* fp = fy::File::open("./hello.txt", fy::OpenMode::read);
+        fp->read(data, 5, 0);
+
+        fy::File::close(fp);
+
+        printf("%s\n", data.c_str());
+    }
 
     fy::release();
 

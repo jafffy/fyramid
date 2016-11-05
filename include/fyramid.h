@@ -10,7 +10,7 @@
 
 namespace fy {
     enum class OpenMode {
-        write
+        write, read
     };
 
     class File {
@@ -18,6 +18,7 @@ namespace fy {
         File(const char* path, OpenMode openMode);
         ~File();
 
+        void read(std::string& data, size_t size, off_t offset);
         void write(const std::string& data, size_t size, off_t offset);
 
         static File* open(const char* path, OpenMode openMode);
