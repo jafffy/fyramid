@@ -4,6 +4,8 @@
 #include <unistd.h>
 #include <cstring>
 
+#include <thread>
+
 using namespace std;
 
 static std::unordered_map<std::string, fy::File*> gFileMap;
@@ -116,11 +118,24 @@ namespace fy {
 
         assert(fd != -1);
 
-        ssize_t res = pread(fd, data, size, offset);
-        if (res == -1) {
-            fprintf(stderr, "pread: %s\n", strerror(errno));
-            _exit(-1);
-        }
+        std::thread t1 { [&]() {
+            ssize_t res = pread(fd, data, size / 2, offset);
+            if (res == -1) {
+                fprintf(stderr, "pread: %s\n", strerror(errno));
+                _exit(-1);
+            }
+        } };
+
+        std::thread t2 { [&]() {
+            ssize_t res = pread(fd, data + size / 2, size - size / 2, offset + size / 2);
+            if (res == -1) {
+                fprintf(stderr, "pread: %s\n", strerror(errno));
+                _exit(-1);
+            }
+        } };
+
+        t1.join();
+        t2.join();
 
         ::close(fd);
     }
